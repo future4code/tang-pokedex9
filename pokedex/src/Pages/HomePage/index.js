@@ -1,5 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import CardsContainer from '../../Components/CardsContainer'
+import Header from '../../Components/Header'
 import {goToPokedexPage} from '../../Routes/coordinators'
 
 export default function HomePage() {
@@ -7,8 +9,8 @@ export default function HomePage() {
 
     return (
         <div>
-            <h1>Home</h1>
-            <button onClick={() => goToPokedexPage(history)}>Pokedex</button>
+            <Header pageName="Lista de Pokemons"/>
+            <CardsContainer/>
         </div>
     )
 }

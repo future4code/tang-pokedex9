@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import DetailsPage from '../Pages/DetailPage'
 import HomePage from '../Pages/HomePage'
 import PokedexPage from '../Pages/PokedexPage'
+import ErrorPage from "../Pages/ErrorPage";
 
 export default function Router() {
     return (
@@ -18,7 +19,7 @@ export default function Router() {
                     <DetailsPage/>
                 </Route>
                 <Route>
-                    <HomePage/>
+                    <ErrorPage/>
                 </Route>
             </Switch>
             
