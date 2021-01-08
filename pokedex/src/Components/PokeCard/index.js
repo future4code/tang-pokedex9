@@ -11,7 +11,7 @@ export default function PokeCard(props) {
             </div>
             <div>
                 <button onClick={props.goToDetail}>Detalhes</button>
-                <button onClick={props.addToPokedex}>Adicionar na Pokedex</button>
+                <button onClick={props.btnFunction}>{props.btnName}</button>
             </div>
         </CardContainer>
     )
