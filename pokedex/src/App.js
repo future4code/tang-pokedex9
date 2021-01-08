@@ -6,7 +6,13 @@ import axios from "axios"
 
 function App() {
   const [pokeList, setPokeList] = useState([])
-  const dados = {list: pokeList, setList: setPokeList}
+  const [pokedex, setPokedex] = useState([])
+  const data = {
+    pokeList: pokeList, 
+    setPokeList: setPokeList,
+    pokedex: pokedex,  
+    setPokedex: setPokedex
+  }
   
   useEffect(() =>{
     let i = 1;
@@ -21,7 +27,7 @@ function App() {
   }, [setPokeList])
 
   return (
-    <PokeContext.Provider value={dados}>
+    <PokeContext.Provider value={data}>
       <Routes/>
     </PokeContext.Provider>
   );
