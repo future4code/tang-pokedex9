@@ -1,23 +1,29 @@
 import React from 'react'
-import BackButton from '../../Components/BackButton'
 import Header from '../../Components/Header'
 import { DetailsContainer, InfoContainer } from './styles'
 
-export default function DetailsPage() {
+export default function DetailsPage(props) {
     return (
         <div>
-            <Header pageName="Nome do Pokemon"/>
+            <Header pageName={props.name}/>
             <DetailsContainer>
                 <InfoContainer>
-                    <p>front img</p>
-                    <p>back img</p>
+                    <img src={props.imgFront} alt={`${props.name} front`}/>
+                    <img src={props.imgBack} alt={`${props.name} back`} />
                 </InfoContainer>
                 <InfoContainer>
-                    <p>poke type</p>
-                    <p>poke stats</p>
+                    <p>{props.type}</p>
+                    <ul>
+                        <li>{props.hp} : {props.hpScore}</li>
+                        <li>{props.attack} : {props.attackScore}</li>
+                        <li>{props.defense} : {props.defenseScore}</li>
+                        <li>{props.specialAtk} : {props.specialAtkScore}</li>
+                        <li>{props.specialDef} : {props.specialDefScore}</li>
+                        <li>{props.speed} : {props.speedScore}</li>
+                    </ul>
                 </InfoContainer>
                 <InfoContainer>
-                    <p>special attacks</p>
+                    <p>{props.moves}</p>
                 </InfoContainer>
             </DetailsContainer>
         </div>
