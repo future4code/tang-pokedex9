@@ -1,7 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
 import { goToHomePage, goToPokedexPage } from '../../Routes/coordinators';
-import BackButton from '../BackButton';
 import { HeaderContainer } from './styles';
 
 export default function Header(props) {
@@ -26,7 +25,7 @@ export default function Header(props) {
         } else {
             return (
                 <HeaderContainer>
-                    <BackButton/>
+                    <button onClick={() => history.goBack()}>Voltar</button>
                     <h1>{pageName}</h1>
                 </HeaderContainer>
             )

@@ -5,7 +5,7 @@ import Header from '../../Components/Header'
 import PokeContext from '../../contexts/PokeContext'
 import { goToDetailPage } from '../../Routes/coordinators'
 import PokeCard from '../../Components/PokeCard'
-import loading from "../../img/loading.gif";
+import Loading from "../../Components/Loading";
 
 export default function HomePage() {
     const history = useHistory()
@@ -26,9 +26,10 @@ export default function HomePage() {
     const renderPokeList = data.pokeList.map((item) => {
         return (
             <PokeCard
+                key={item.id}
                 name={item.name.toUpperCase()}
                 img={item.sprites.front_default}
-                goToDetail={() => goToDetailPage(history)}
+                goToDetail={() => goToDetailPage(history, item.id)}
                 btnFunction={() => addToPokedex(item)}
                 btnName="Adicionar à Pokedex"
             />
@@ -39,7 +40,7 @@ export default function HomePage() {
         <div>
             <Header pageName="Lista de Pokemons"/>
             <CardsContainer>
-                {data.pokeList[0] ? renderPokeList : <div><img src={loading} alt="Carregando..." /></div>}
+                {data.pokeList[0] ? renderPokeList : <Loading/>}
             </CardsContainer>
         </div>
     )
