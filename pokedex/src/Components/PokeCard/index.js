@@ -1,18 +1,18 @@
 import React from 'react'
-import { CardContainer } from './styles'
+import { CardContainer, BtnContainer } from './styles'
 
 export default function PokeCard(props) {
 
     return (
-        <CardContainer>
+        <CardContainer key={props.id}>
             <h2>{props.name}</h2>
             <div>
                 <img src={props.img} alt={props.name} />
             </div>
-            <div>
+            <BtnContainer>
                 <button onClick={props.goToDetail}>Detalhes</button>
                 <button onClick={props.btnFunction}>{props.btnName}</button>
-            </div>
+            </BtnContainer>
         </CardContainer>
     )
 }

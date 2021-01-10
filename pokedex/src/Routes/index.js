@@ -15,7 +15,7 @@ export default function Router() {
                 <Route exact path='/pokedex'>
                     <PokedexPage/>
                 </Route>
-                <Route exact path='/detail'>
+                <Route exact path='/detail/:pokeId'>
                     <DetailsPage/>
                 </Route>
                 <Route>

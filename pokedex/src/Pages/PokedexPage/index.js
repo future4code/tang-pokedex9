@@ -26,9 +26,10 @@ export default function PokedexPage() {
     const renderPokedex = data.pokedex.map((item) => {
         return (
             <PokeCard
+                key={item.id}
                 name={item.name.toUpperCase()}
                 img={item.sprites.front_default}
-                goToDetail={() => goToDetailPage(history)}
+                goToDetail={() => goToDetailPage(history, item.id)}
                 btnFunction={() => removeFromPokedex(item)}
                 btnName="Remover da Pokedex"
             />
