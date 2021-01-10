@@ -2,6 +2,10 @@ import React from 'react'
 import { useHistory } from 'react-router-dom';
 import { goToHomePage, goToPokedexPage } from '../../Routes/coordinators';
 import { HeaderContainer } from './styles';
+// import Change from '../../img/change.png'
+import Home from '../../img/home.png'
+import Pokedex from '../../img/pokedex.png'
+import GoBack from '../../img/back.png'
 
 export default function Header(props) {
     const history = useHistory()
@@ -11,21 +15,39 @@ export default function Header(props) {
         if (pageName === "Lista de Pokemons") {
             return (
                 <HeaderContainer>
-                    <button onClick={() => goToPokedexPage(history)}>Minha Pokedex</button>
+                    <div>
+                        <button onClick={() => goToPokedexPage(history)}> 
+                            {/* <img src={Change} />  */}
+                            <img src={Pokedex} />
+                            <span>Pokedex</span>
+                        </button>
+                    </div>
                     <h1>{pageName}</h1>
                 </HeaderContainer>
             )
         } else if (pageName === "Pokedex") {
             return (
                 <HeaderContainer>
-                    <button onClick={() => goToHomePage(history)}>Home</button>
+                    <div>
+                        <button onClick={() => goToHomePage(history)}> 
+                            {/* <img src={Change} />  */}
+                            <img src={Home} />
+                            <span>Home</span>
+                        </button>
+                    </div>
                     <h1>{pageName}</h1>
                 </HeaderContainer>
             )
         } else {
             return (
                 <HeaderContainer>
-                    <button onClick={() => history.goBack()}>Voltar</button>
+                    <div>
+                        <button onClick={() => history.goBack()}> 
+                            {/* <img src={Change} />  */}
+                            <img src={GoBack} />
+                            <span>Voltar</span>
+                        </button>
+                    </div>
                     <h1>{pageName}</h1>
                 </HeaderContainer>
             )
