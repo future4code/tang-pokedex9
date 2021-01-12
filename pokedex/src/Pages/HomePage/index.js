@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { CardsContainer } from '../../Components/CardsContainer/styles'
 import Header from '../../Components/Header'
 import PokeContext from '../../contexts/PokeContext'
-import { goToDetailPage } from '../../Routes/coordinators'
+import { goToDetailPage , goToBattlePage } from '../../Routes/coordinators'
 import PokeCard from '../../Components/PokeCard'
 import Loading from "../../Components/Loading";
 import PopUp from '../../Components/PopUp'
@@ -23,6 +23,11 @@ export default function HomePage() {
         data.setPokeList(newPokeList)
         data.setPopUp(!data.popUp)
     }
+
+    const goToBattle = (pokemon) => {
+        data.setPokemon(pokemon)
+        goToBattlePage(history)
+    }
     
     const renderPokeList = data.pokeList.map((item) => {
         return (
@@ -30,6 +35,7 @@ export default function HomePage() {
                 key={item.id}
                 name={item.name.toUpperCase()}
                 img={item.sprites.front_default}
+                battleFunction={() => goToBattle(item)}
                 goToDetail={() => goToDetailPage(history, item.id)}
                 btnFunction={() => addToPokedex(item)}
                 btnName="Adicionar à Pokedex"
@@ -48,4 +54,3 @@ export default function HomePage() {
     )
 }
 
-//comentario aleatorio pq meu git ta zuado, o comentário é uma alteração no código para eu poder commitar dnovo.

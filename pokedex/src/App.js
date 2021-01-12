@@ -8,14 +8,8 @@ function App() {
   const [pokeList, setPokeList] = useState([])
   const [pokedex, setPokedex] = useState([])
   const [popUp, setPopUp] = useState(false)
-  const data = {
-    pokeList: pokeList, 
-    setPokeList: setPokeList,
-    pokedex: pokedex,  
-    setPokedex: setPokedex,
-    popUp: popUp,
-    setPopUp: setPopUp,
-  }
+  const [pokemon, setPokemon] = useState({})
+  const data = { pokeList , setPokeList , pokedex , setPokedex , popUp , setPopUp , pokemon , setPokemon }
   
   useEffect(() =>{
     let i = 1;
