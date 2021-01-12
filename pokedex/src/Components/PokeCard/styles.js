@@ -11,7 +11,7 @@ export const CardContainer = styled.div `
     border: 2px solid black;
     width: 240px;
     text-align: center;
-    height: 320px;
+    height: 360px;
     margin: 16px;
     display: flex;
     flex-direction: column;
@@ -28,8 +28,13 @@ h2 {
 }
 `
 
+export const OptionsContainer = styled.div `
+    height: 24%;
+    width: 100%;
+` 
+
 export const BtnContainer = styled.div`
-        height: 16%;
+        height: 50%;
         display: flex;
         border-top: 2px solid black;
         border-radius: 0 0 4px 4px;
@@ -52,5 +57,17 @@ export const BtnContainer = styled.div`
     }
 `
 
+export const BattleBtn = styled.button `
+    border: none;
+    height: 50%;
+    width: 100%;
+    cursor: pointer;
+    background-color: rgba(300,0,0,0.40);
+    color: #fbcb0e;
+    border-top: 2px solid black;
+:hover {
+    background-color: rgba(300,0,0,0.55);
+}
+`
 
-// rgba(143,143,143,0.3981967787114846)
+

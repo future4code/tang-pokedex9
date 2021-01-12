@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom';
-import { goToDetailPage } from '../../Routes/coordinators';
+import { goToBattlePage, goToDetailPage } from '../../Routes/coordinators';
 import { CardsContainer } from '../../Components/CardsContainer/styles'
 import Header from '../../Components/Header'
 import PokeContext from '../../contexts/PokeContext'
@@ -22,6 +22,11 @@ export default function PokedexPage() {
         data.setPokedex(newPokedex)
         data.setPopUp(!data.popUp)
     }
+
+    const goToBattle = (pokemon) => {
+        data.setPokemon(pokemon)
+        goToBattlePage(history)
+    }
     
     const renderPokedex = data.pokedex.map((item) => {
         return (
@@ -30,6 +35,7 @@ export default function PokedexPage() {
                 name={item.name.toUpperCase()}
                 img={item.sprites.front_default}
                 goToDetail={() => goToDetailPage(history, item.id)}
+                battleFunction={() => goToBattle(item)}
                 btnFunction={() => removeFromPokedex(item)}
                 btnName="Remover da Pokedex"
             />

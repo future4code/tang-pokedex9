@@ -1,7 +1,8 @@
 import React from 'react'
-import { CardContainer, BtnContainer } from './styles'
+import { CardContainer, BtnContainer, BattleBtn, OptionsContainer } from './styles'
 
 export default function PokeCard(props) {
+    
 
     return (
         <CardContainer key={props.id}>
@@ -9,10 +10,13 @@ export default function PokeCard(props) {
             <div>
                 <img src={props.img} alt={props.name} />
             </div>
-            <BtnContainer>
-                <button onClick={props.goToDetail}>Detalhes</button>
-                <button onClick={props.btnFunction}>{props.btnName}</button>
-            </BtnContainer>
+            <OptionsContainer>
+                <BattleBtn onClick={props.battleFunction}>Escolher para Batalha</BattleBtn>
+                <BtnContainer>
+                    <button onClick={props.goToDetail}>Detalhes</button>
+                    <button onClick={props.btnFunction}>{props.btnName}</button>
+                </BtnContainer>
+            </OptionsContainer>
         </CardContainer>
     )
 }
