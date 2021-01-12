@@ -7,11 +7,14 @@ import axios from "axios"
 function App() {
   const [pokeList, setPokeList] = useState([])
   const [pokedex, setPokedex] = useState([])
+  const [popUp, setPopUp] = useState(false)
   const data = {
     pokeList: pokeList, 
     setPokeList: setPokeList,
     pokedex: pokedex,  
-    setPokedex: setPokedex
+    setPokedex: setPokedex,
+    popUp: popUp,
+    setPopUp: setPopUp,
   }
   
   useEffect(() =>{
@@ -23,7 +26,7 @@ function App() {
         console.log(error)
       })
       i++
-    } while (i<152);
+    } while (i<20);
   }, [setPokeList])
 
   return (

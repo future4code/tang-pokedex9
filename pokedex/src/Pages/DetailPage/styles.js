@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const DetailsContainer = styled.div `
     border: 1px red solid;
     display: flex;
+    flex-wrap: wrap;
     min-height: 85vh;
     justify-content: space-evenly;
     align-items: center;
@@ -11,7 +12,8 @@ export const DetailsContainer = styled.div `
 export const InfoContainer = styled.div `
     text-align: center;
     height: 75vh;
-    width: 30vw;
+    max-width: 30vw;
+    min-width: 300px;
     background: radial-gradient(
         circle, 
         rgba(255,255,255,0) 13%, 

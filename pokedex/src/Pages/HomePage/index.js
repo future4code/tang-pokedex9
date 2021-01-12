@@ -6,6 +6,7 @@ import PokeContext from '../../contexts/PokeContext'
 import { goToDetailPage } from '../../Routes/coordinators'
 import PokeCard from '../../Components/PokeCard'
 import Loading from "../../Components/Loading";
+import PopUp from '../../Components/PopUp'
 
 export default function HomePage() {
     const history = useHistory()
@@ -20,7 +21,7 @@ export default function HomePage() {
             newPokeList.splice(position,1)
         }  
         data.setPokeList(newPokeList)
-        alert(`${newItem.name} adicionado à pokedex!`)
+        data.setPopUp(!data.popUp)
     }
     
     const renderPokeList = data.pokeList.map((item) => {
@@ -38,6 +39,7 @@ export default function HomePage() {
 
     return (
         <div>
+            {data.popUp? <PopUp message={`Pokemon adicionado à pokedex!`}/> : null}
             <Header pageName="Lista de Pokemons"/>
             <CardsContainer>
                 {data.pokeList[0] ? renderPokeList : <Loading/>}

@@ -5,13 +5,14 @@ export const HeaderContainer = styled.div `
     justify-content: space-between;
     border: 1px red solid;
     background-color: #ef372d;
-    height: 12.5vh;
+    height: 14vh;
+    align-items: center;
 h1 {
     margin: 0;
     padding: 0;
     flex-grow: 1;
     text-align: center;
-    font-size: 3em;
+    font-size: 4vmax;
     color: #fbcb0e;
     text-shadow: 2px 2px grey;
     -webkit-text-stroke-width: 1px;
@@ -31,6 +32,7 @@ div {
 
 button {
     cursor: pointer;
+    margin-left: 32px;
     border: none;
     border-radius: 8px;
     border-right: 2px solid #8B0000;

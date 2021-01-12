@@ -5,7 +5,7 @@ import { CardsContainer } from '../../Components/CardsContainer/styles'
 import Header from '../../Components/Header'
 import PokeContext from '../../contexts/PokeContext'
 import PokeCard from '../../Components/PokeCard'
-
+import PopUp from '../../Components/PopUp'
 
 export default function PokedexPage() {
     const history = useHistory()
@@ -20,7 +20,7 @@ export default function PokedexPage() {
             data.setPokeList( array => [...array, removedItem])            
         } 
         data.setPokedex(newPokedex)
-        alert(`${removedItem.name} removido da pokedex!`)
+        data.setPopUp(!data.popUp)
     }
     
     const renderPokedex = data.pokedex.map((item) => {
@@ -39,6 +39,7 @@ export default function PokedexPage() {
 
     return (
         <div>
+            {data.popUp? <PopUp message={`Pokemon removido da pokedex!`}/> : null}
             <Header pageName="Pokedex"/>
             <CardsContainer>
                 {renderPokedex}
