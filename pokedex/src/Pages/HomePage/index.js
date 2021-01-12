@@ -47,3 +47,5 @@ export default function HomePage() {
         </div>
     )
 }
+
+//comentario aleatorio pq meu git ta zuado, o comentário é uma alteração no código para eu poder commitar dnovo.
