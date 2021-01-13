@@ -10,15 +10,21 @@ import PopUp from '../../Components/PopUp'
 export default function BattlePage() {
     const [enemy, setEnemy] = useState({})
     const [currentEnemyHP, setCurrentEnemyHP] = useState(0)
-    const [myPokemonHP, setPokemonHP] = useState(0)
+    const [myPokemonHP, setMyPokemonHP] = useState(0)
     const [specialAtkAmount, setSpecialAtkAmount] = useState(1)
+    const [message, setMessage] = useState("")
+    const [enemyTurn, setEnemyTurn] = useState(false)
     const data = useContext(PokeContext)
+
+    const TogglePopUp = () => {
+        data.setPopUp(!data.popUp)    
+    }
 
     useEffect(() => {
         axios.get(`${BASE_URL}${Math.floor((Math.random() * 151) + 1)}`).then((res) =>{
             setEnemy(res.data)
             setCurrentEnemyHP(res.data.stats[0].base_stat)
-            setPokemonHP(data.pokemon.stats[0].base_stat)
+            setMyPokemonHP(data.pokemon.stats[0].base_stat)
             setSpecialAtkAmount(Math.floor((Math.random() * 3) + 1))
             console.log(res.data)
             console.log(data.pokemon)
@@ -28,10 +34,6 @@ export default function BattlePage() {
     }, [])
    
     const renderBattle = () => {
-        //Precisamos renderizar diferentes mensagens no popup em diferentes momentos
-        //de acordo com as fazes da batalha
-        // É preciso fazer a lógica inversa dos ataques para os ataques da engine
-        
         /* 
         fazes da batalha
         -> checagem de velocidade, se pokemon da engine tem maior velocidade, ataca primeiro
@@ -46,6 +48,21 @@ export default function BattlePage() {
        const minDamage = (data.pokemon.stats[1].base_stat * 0.5) - (enemy.stats[2].base_stat * 0.6)
        const maxDamage = (data.pokemon.stats[1].base_stat) - (enemy.stats[2].base_stat * 0.3)
        let damage = Math.floor((Math.random() * maxDamage) + minDamage)
+       
+
+       const enemyAtk = () => {
+           const EnemyMinDmg = (enemy.stats[1].base_stat * 0.5) - (data.pokemon.stats[2].base_stat * 0.6)
+           const EnemyMaxDmg = (enemy.stats[1].base_stat) - (data.pokemon.stats[2].base_stat * 0.3)
+           let enemyDmg = Math.floor((Math.random() * EnemyMaxDmg) + EnemyMinDmg)
+           if (enemyDmg < (enemy.stats[1].base_stat * 0.1) ) {
+               enemyDmg = Math.round(enemy.stats[1].base_stat * 0.1)
+           } else if (enemyDmg > (enemy.stats[0].base_stat * 0.8) ) {
+               enemyDmg = Math.round(enemy.stats[0].base_stat * 0.8)
+           }
+           setMyPokemonHP(myPokemonHP - enemyDmg)
+           setMessage(`${enemy.name} attacks and deals ${enemyDmg} damage!`)
+           setEnemyTurn(!enemyTurn)
+       }
 
         const attack = () => {
             if (damage < (data.pokemon.stats[1].base_stat * 0.1)) {
@@ -53,8 +70,8 @@ export default function BattlePage() {
             } else if (damage > (enemy.stats[0].base_stat * 0.8)) {
                 damage = Math.round(enemy.stats[0].base_stat * 0.8) 
             }
-            console.log(damage)
             setCurrentEnemyHP(currentEnemyHP - damage)
+            setMessage(`${data.pokemon.name} attacks and deals ${damage} damage!`)
             return damage
         }
 
@@ -69,40 +86,87 @@ export default function BattlePage() {
             if ( specialDmg < 15) {
                 specialDmg = 15
             }
-            console.log(specialDmg)
             setCurrentEnemyHP(currentEnemyHP - specialDmg)
             setSpecialAtkAmount(specialAtkAmount - 1)
+            console.log(specialDmg)
+            setMessage(`${data.pokemon.name} uses a special attack and deals ${specialDmg} damage!`)
+        }
+
+        const battleTurn = (playerAtk) => {
+            if (playerAtk === "special") {
+                specialAttack()
+                TogglePopUp()
+                if (currentEnemyHP > 0) {
+                    setEnemyTurn(!enemyTurn)
+                }
+            } else if (playerAtk === "attack"){
+                attack()
+                TogglePopUp()
+                if (currentEnemyHP > 0) {
+                    setEnemyTurn(!enemyTurn)
+                }
+            }
+        }
+
+        const throwPokeball = () => {
+            const catchChance = 60 + (currentEnemyHP * -1)
+            const catchTest = Math.floor((Math.random() * 100) + 1)
+            if (catchTest < catchChance ) {
+                setMessage(
+                    `${data.pokemon.name} wins the battle! 
+                    You throws a pokeball and... Success! 
+                    ${enemy.name} added to the pokedex! `
+                )
+            } else {
+                setMessage(
+                    `${data.pokemon.name} wins the battle! 
+                    You throws a pokeball and... Failed! 
+                    ${enemy.name} runs away! `
+                )
+            }
+        }
+
+        const nextStep = () => {
+            if (enemyTurn && (currentEnemyHP > 0) ) {
+                enemyAtk()
+            } else if (currentEnemyHP < 1) {
+                throwPokeball()
+            } else {
+                TogglePopUp()   
+            }
         }
 
         return (
-            <PageContainer>
+            <div>
+                {data.popUp? <PopUp message={message} onClickBtn={() =>nextStep()}/> : null}
+                <Header pageName='Batalha'/>
+                <PageContainer>
+                    <EnemyInfo>
+                        <p> {`WILD ${enemy.name.toUpperCase()}`}</p>
+                        <p> HP: {currentEnemyHP} / {enemy.stats[0].base_stat} </p>
+                    </EnemyInfo>
+                    <EnemyImg src={enemy.sprites.front_default} alt="" />
 
-                <EnemyInfo>
-                    <p> {`WILD ${enemy.name.toUpperCase()}`}</p>
-                    <p> HP: {currentEnemyHP} / {enemy.stats[0].base_stat} </p>
-                </EnemyInfo>
-                <EnemyImg src={enemy.sprites.front_default} alt="" />
+                    <MyPokemonImg src={data.pokemon.sprites.back_default} alt=""  />
+                    <MyPokemonInfo>
+                        <div>
+                            <p> {data.pokemon.name.toUpperCase()}</p>
+                            <p> HP: {myPokemonHP} / {data.pokemon.stats[0].base_stat} </p>
+                            <p>Special Atk Left: {specialAtkAmount}</p>
+                        </div>
+                        <OptionsContainer>
+                            <button onClick={() => battleTurn("attack")} >Attack</button>
+                            <button disabled={specialAtkAmount > 0 ? false : true} onClick={() => battleTurn("special")} >Special Attack</button> 
+                        </OptionsContainer>
+                    </MyPokemonInfo>
 
-                <MyPokemonImg src={data.pokemon.sprites.back_default} alt=""  />
-                <MyPokemonInfo>
-                    <div>
-                        <p> {data.pokemon.name.toUpperCase()}</p>
-                        <p> HP: {myPokemonHP} / {data.pokemon.stats[0].base_stat} </p>
-                        <p>Special Atk Left: {specialAtkAmount}</p>
-                    </div>
-                    <OptionsContainer>
-                        <button onClick={() => attack()} >Attack</button>
-                        <button onClick={() => specialAttack()} >Special Attack</button> 
-                    </OptionsContainer>
-                </MyPokemonInfo>
-
-            </PageContainer>
+                </PageContainer>
+            </div>
         )
     } 
 
     return (
         <div>
-            <Header pageName='Batalha'/>
             {enemy.id && data.pokemon.id ? renderBattle() : <Loading/>}
         </div>
     )

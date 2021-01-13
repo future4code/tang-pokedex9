@@ -12,6 +12,11 @@ export default function HomePage() {
     const history = useHistory()
     const data = useContext(PokeContext)
     data.pokeList.sort(function(a,b){return a.id - b.id})
+
+    const closePopUp = () => {
+        const toggle = !data.popUp
+        data.setPopUp(toggle)    
+    }
     
     const addToPokedex = (newItem) => {
         const position = data.pokeList.findIndex((item) => item.id === newItem.id)       
@@ -45,7 +50,7 @@ export default function HomePage() {
 
     return (
         <div>
-            {data.popUp? <PopUp message={`Pokemon adicionado à pokedex!`}/> : null}
+            {data.popUp? <PopUp message={`Pokemon adicionado à pokedex!`} onClickBtn={closePopUp}/> : null}
             <Header pageName="Lista de Pokemons"/>
             <CardsContainer>
                 {data.pokeList[0] ? renderPokeList : <Loading/>}

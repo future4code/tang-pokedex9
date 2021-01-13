@@ -12,6 +12,11 @@ export default function PokedexPage() {
     const data = useContext(PokeContext)
     data.pokeList.sort(function(a,b){return a.id - b.id})
 
+    const closePopUp = () => {
+        const toggle = !data.popUp
+        data.setPopUp(toggle)    
+    }
+
     const removeFromPokedex = (removedItem) => {
         const position = data.pokedex.findIndex((item) => item.id === removedItem.id)       
         let newPokedex = [...data.pokedex]
@@ -45,7 +50,7 @@ export default function PokedexPage() {
 
     return (
         <div>
-            {data.popUp? <PopUp message={`Pokemon removido da pokedex!`}/> : null}
+            {data.popUp? <PopUp message={`Pokemon removido da pokedex!`} onClickBtn={closePopUp} /> : null}
             <Header pageName="Pokedex"/>
             <CardsContainer>
                 {renderPokedex}
