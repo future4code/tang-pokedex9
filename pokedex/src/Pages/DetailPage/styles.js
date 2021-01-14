@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const DetailsContainer = styled.div `
-    border: 1px red solid;
     display: flex;
     flex-wrap: wrap;
     min-height: 85vh;

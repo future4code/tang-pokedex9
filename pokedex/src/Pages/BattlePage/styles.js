@@ -2,8 +2,7 @@ import styled from "styled-components";
 import battleGround from "../../img/battleground02.png"
 
 export const PageContainer = styled.div `
-    border: 1px solid red;
-    height: 85vh;
+    height: 86vh;
     background-image: url(${battleGround});
     background-size: cover;
     background-position: center;

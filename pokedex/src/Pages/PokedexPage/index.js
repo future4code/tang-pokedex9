@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import { goToBattlePage, goToDetailPage } from '../../Routes/coordinators';
 import { CardsContainer } from '../../Components/CardsContainer/styles'
@@ -11,6 +11,10 @@ export default function PokedexPage() {
     const history = useHistory()
     const data = useContext(PokeContext)
     data.pokeList.sort(function(a,b){return a.id - b.id})
+
+    useEffect(() => {
+        data.setDisplayBattle(true)
+    }, [])
 
     const closePopUp = () => {
         const toggle = !data.popUp
@@ -42,7 +46,7 @@ export default function PokedexPage() {
                 goToDetail={() => goToDetailPage(history, item.id)}
                 battleFunction={() => goToBattle(item)}
                 btnFunction={() => removeFromPokedex(item)}
-                btnName="Remover da Pokedex"
+                btnName="Remove"
             />
         )
     })

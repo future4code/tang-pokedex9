@@ -6,8 +6,12 @@ import { BASE_URL } from '../../constants/urls'
 import Loading from '../../Components/Loading'
 import PokeContext from '../../contexts/PokeContext'
 import PopUp from '../../Components/PopUp'
+import { useHistory } from 'react-router-dom'
 
 export default function BattlePage() {
+    const history = useHistory();
+    const [throwedPokeball, setThrowedPokeball] = useState(false);
+    const [fail, setFail] = useState(false);
     const [enemy, setEnemy] = useState({})
     const [currentEnemyHP, setCurrentEnemyHP] = useState(0)
     const [myPokemonHP, setMyPokemonHP] = useState(0)
@@ -26,8 +30,8 @@ export default function BattlePage() {
             setCurrentEnemyHP(res.data.stats[0].base_stat)
             setMyPokemonHP(data.pokemon.stats[0].base_stat)
             setSpecialAtkAmount(Math.floor((Math.random() * 3) + 1))
-            console.log(res.data)
-            console.log(data.pokemon)
+            //console.log(res.data)
+            //console.log(data.pokemon)
         }).catch((error) => {
             alert(`${error}: Tente novamente`)
         })
@@ -37,12 +41,6 @@ export default function BattlePage() {
         /* 
         fazes da batalha
         -> checagem de velocidade, se pokemon da engine tem maior velocidade, ataca primeiro
-        -> ataque do jogador
-        -> ataque da engine
-        -> repete até algum pokemon ficar com HP menor que 1
-        -> se jogador perde, mensagem e retorna a pokedex
-        -> se jogador ganha, tentativa de capturar o pokemon
-        -> se capturado adiciona o pokemon a pokedex e chama outro pokemon para batalha (ou retorna para pokedex?)
         */
 
        const minDamage = (data.pokemon.stats[1].base_stat * 0.5) - (enemy.stats[2].base_stat * 0.6)
@@ -108,6 +106,11 @@ export default function BattlePage() {
             }
         }
 
+        const addToPokedex = (newItem) => {
+            data.setPokedex( array => [...array, newItem])
+            console.log(newItem.name)
+        }
+
         const throwPokeball = () => {
             const catchChance = 60 + (currentEnemyHP * -1)
             const catchTest = Math.floor((Math.random() * 100) + 1)
@@ -117,6 +120,7 @@ export default function BattlePage() {
                     You throws a pokeball and... Success! 
                     ${enemy.name} added to the pokedex! `
                 )
+                addToPokedex(enemy)
             } else {
                 setMessage(
                     `${data.pokemon.name} wins the battle! 
@@ -124,13 +128,27 @@ export default function BattlePage() {
                     ${enemy.name} runs away! `
                 )
             }
+
+            setThrowedPokeball(true)
         }
 
         const nextStep = () => {
             if (enemyTurn && (currentEnemyHP > 0) ) {
                 enemyAtk()
-            } else if (currentEnemyHP < 1) {
+            } else if (currentEnemyHP < 1 && throwedPokeball === false) {
                 throwPokeball()
+            } else if (throwedPokeball) {
+                history.push('/pokedex')
+                TogglePopUp()
+            } else if (myPokemonHP < 1 && fail === false) {
+                setFail(true)
+                setMessage(
+                    `${data.pokemon.name} lose the battle! 
+                    Returning to Pokedex!`
+                )
+            } else if (fail) {
+                history.push('/pokedex')
+                TogglePopUp()
             } else {
                 TogglePopUp()   
             }

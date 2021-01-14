@@ -29,6 +29,9 @@ h2 {
 `
 
 export const OptionsContainer = styled.div `
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     height: 24%;
     width: 100%;
 ` 
