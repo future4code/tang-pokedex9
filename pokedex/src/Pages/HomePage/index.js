@@ -28,11 +28,6 @@ export default function HomePage() {
         data.setPokeList(newPokeList)
         data.setPopUp(!data.popUp)
     }
-
-    const goToBattle = (pokemon) => {
-        data.setPokemon(pokemon)
-        goToBattlePage(history)
-    }
     
     const renderPokeList = data.pokeList.map((item) => {
         return (
@@ -40,10 +35,9 @@ export default function HomePage() {
                 key={item.id}
                 name={item.name.toUpperCase()}
                 img={item.sprites.front_default}
-                battleFunction={() => goToBattle(item)}
                 goToDetail={() => goToDetailPage(history, item.id)}
                 btnFunction={() => addToPokedex(item)}
-                btnName="Adicionar à Pokedex"
+                btnName="Add to Pokedex"
             />
         )
     })

@@ -5,11 +5,12 @@ import { BASE_URL } from "./constants/urls";
 import axios from "axios"
 
 function App() {
+  const [displayBattle, setDisplayBattle] = useState(false)
   const [pokeList, setPokeList] = useState([])
   const [pokedex, setPokedex] = useState([])
   const [popUp, setPopUp] = useState(false)
   const [pokemon, setPokemon] = useState({})
-  const data = { pokeList , setPokeList , pokedex , setPokedex , popUp , setPopUp , pokemon , setPokemon }
+  const data = { displayBattle, setDisplayBattle, pokeList , setPokeList , pokedex , setPokedex , popUp , setPopUp , pokemon , setPokemon }
   
   useEffect(() =>{
     let i = 1;
