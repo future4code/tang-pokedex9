@@ -21,7 +21,7 @@ function App() {
         console.log(error)
       })
       i++
-    } while (i<20);
+    } while (i<21);
   }, [setPokeList])
 
   return (

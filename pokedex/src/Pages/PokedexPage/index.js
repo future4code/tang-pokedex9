@@ -11,6 +11,7 @@ export default function PokedexPage() {
     const history = useHistory()
     const data = useContext(PokeContext)
     data.pokeList.sort(function(a,b){return a.id - b.id})
+    data.pokedex.sort(function(a,b){return a.id - b.id})
 
     useEffect(() => {
         data.setDisplayBattle(true)
@@ -54,7 +55,7 @@ export default function PokedexPage() {
 
     return (
         <div>
-            {data.popUp? <PopUp message={`Pokemon removido da pokedex!`} onClickBtn={closePopUp} /> : null}
+            {data.popUp? <PopUp message={`Pokemon removed from pokedex!`} onClickBtn={closePopUp} /> : null}
             <Header pageName="Pokedex"/>
             <CardsContainer>
                 {renderPokedex}

@@ -14,7 +14,7 @@ export default function BattlePage() {
     const [fail, setFail] = useState(false);
     const [enemy, setEnemy] = useState({})
     const [currentEnemyHP, setCurrentEnemyHP] = useState(0)
-    const [myPokemonHP, setMyPokemonHP] = useState(0)
+    const [playerHP, setPlayerHP] = useState(0)
     const [specialAtkAmount, setSpecialAtkAmount] = useState(1)
     const [message, setMessage] = useState("")
     const [enemyTurn, setEnemyTurn] = useState(false)
@@ -28,43 +28,43 @@ export default function BattlePage() {
         axios.get(`${BASE_URL}${Math.floor((Math.random() * 151) + 1)}`).then((res) =>{
             setEnemy(res.data)
             setCurrentEnemyHP(res.data.stats[0].base_stat)
-            setMyPokemonHP(data.pokemon.stats[0].base_stat)
+            setPlayerHP(data.pokemon.stats[0].base_stat)
             setSpecialAtkAmount(Math.floor((Math.random() * 3) + 1))
-            //console.log(res.data)
-            //console.log(data.pokemon)
         }).catch((error) => {
-            alert(`${error}: Tente novamente`)
+            alert(`${error}: Try again`)
         })
     }, [])
    
     const renderBattle = () => {
-        /* 
-        fazes da batalha
-        -> checagem de velocidade, se pokemon da engine tem maior velocidade, ataca primeiro
-        */
+        const playerAtk = data.pokemon.stats[1].base_stat
+        const playerDef = data.pokemon.stats[2].base_stat
+        const playerSpecialAtk = data.pokemon.stats[3].base_stat
 
-       const minDamage = (data.pokemon.stats[1].base_stat * 0.5) - (enemy.stats[2].base_stat * 0.6)
-       const maxDamage = (data.pokemon.stats[1].base_stat) - (enemy.stats[2].base_stat * 0.3)
-       let damage = Math.floor((Math.random() * maxDamage) + minDamage)
-       
+        const enemyAttack = enemy.stats[1].base_stat
+        const enemyDef = enemy.stats[2].base_stat
+        const enemySpecialDef = enemy.stats[4].base_stat
 
-       const enemyAtk = () => {
-           const EnemyMinDmg = (enemy.stats[1].base_stat * 0.5) - (data.pokemon.stats[2].base_stat * 0.6)
-           const EnemyMaxDmg = (enemy.stats[1].base_stat) - (data.pokemon.stats[2].base_stat * 0.3)
+        const minDamage = (playerAtk * 0.5) - (enemyDef * 0.6)
+        const maxDamage = (playerAtk) - (enemyDef * 0.3)
+        let damage = Math.floor((Math.random() * maxDamage) + minDamage)
+
+        const enemyAtk = () => {
+           const EnemyMinDmg = (enemyAttack * 0.5) - (playerDef * 0.6)
+           const EnemyMaxDmg = (enemyAttack) - (playerDef * 0.3)
            let enemyDmg = Math.floor((Math.random() * EnemyMaxDmg) + EnemyMinDmg)
-           if (enemyDmg < (enemy.stats[1].base_stat * 0.1) ) {
-               enemyDmg = Math.round(enemy.stats[1].base_stat * 0.1)
+           if (enemyDmg < (enemyAttack * 0.1) ) {
+               enemyDmg = Math.round(enemyAttack * 0.1)
            } else if (enemyDmg > (enemy.stats[0].base_stat * 0.8) ) {
                enemyDmg = Math.round(enemy.stats[0].base_stat * 0.8)
            }
-           setMyPokemonHP(myPokemonHP - enemyDmg)
+           setPlayerHP(playerHP - enemyDmg)
            setMessage(`${enemy.name} attacks and deals ${enemyDmg} damage!`)
            setEnemyTurn(!enemyTurn)
-       }
+        }
 
         const attack = () => {
-            if (damage < (data.pokemon.stats[1].base_stat * 0.1)) {
-                damage = Math.round(data.pokemon.stats[1].base_stat * 0.1) 
+            if (damage < (playerAtk * 0.1)) {
+                damage = Math.round(playerAtk * 0.1) 
             } else if (damage > (enemy.stats[0].base_stat * 0.8)) {
                 damage = Math.round(enemy.stats[0].base_stat * 0.8) 
             }
@@ -74,7 +74,7 @@ export default function BattlePage() {
         }
 
         const specialAttack = () => {
-            let multiplier = (data.pokemon.stats[3].base_stat + enemy.stats[4].base_stat) / enemy.stats[4].base_stat
+            let multiplier = (playerSpecialAtk + enemySpecialDef) / enemySpecialDef
             if (multiplier < 1.5) {
                 multiplier = 1.5
             } else if (multiplier > 2) {
@@ -140,7 +140,7 @@ export default function BattlePage() {
             } else if (throwedPokeball) {
                 history.push('/pokedex')
                 TogglePopUp()
-            } else if (myPokemonHP < 1 && fail === false) {
+            } else if (playerHP < 1 && fail === false) {
                 setFail(true)
                 setMessage(
                     `${data.pokemon.name} lose the battle! 
@@ -157,19 +157,19 @@ export default function BattlePage() {
         return (
             <div>
                 {data.popUp? <PopUp message={message} onClickBtn={() =>nextStep()}/> : null}
-                <Header pageName='Batalha'/>
+                <Header pageName='Battle'/>
                 <PageContainer>
                     <EnemyInfo>
                         <p> {`WILD ${enemy.name.toUpperCase()}`}</p>
                         <p> HP: {currentEnemyHP} / {enemy.stats[0].base_stat} </p>
                     </EnemyInfo>
-                    <EnemyImg src={enemy.sprites.front_default} alt="" />
+                    <EnemyImg src={enemy.sprites.front_default} alt={`${enemy.name} front`} />
 
-                    <MyPokemonImg src={data.pokemon.sprites.back_default} alt=""  />
+                    <MyPokemonImg src={data.pokemon.sprites.back_default} alt={`${data.pokemon.name} back`}  />
                     <MyPokemonInfo>
                         <div>
                             <p> {data.pokemon.name.toUpperCase()}</p>
-                            <p> HP: {myPokemonHP} / {data.pokemon.stats[0].base_stat} </p>
+                            <p> HP: {playerHP} / {data.pokemon.stats[0].base_stat} </p>
                             <p>Special Atk Left: {specialAtkAmount}</p>
                         </div>
                         <OptionsContainer>

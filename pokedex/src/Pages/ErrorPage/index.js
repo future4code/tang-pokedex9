@@ -9,7 +9,7 @@ export default function ErrorPage() {
 
     return (
         <ErrorPageContainer>
-            <h1>Erro 404</h1>
+            <h1>404</h1>
             <ImgContainer>
                 <img src={snorlax} alt="snorlax" />
             </ImgContainer>

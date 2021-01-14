@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext , useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CardsContainer } from '../../Components/CardsContainer/styles'
 import Header from '../../Components/Header'
 import PokeContext from '../../contexts/PokeContext'
-import { goToDetailPage , goToBattlePage } from '../../Routes/coordinators'
+import { goToDetailPage } from '../../Routes/coordinators'
 import PokeCard from '../../Components/PokeCard'
 import Loading from "../../Components/Loading";
 import PopUp from '../../Components/PopUp'
@@ -12,6 +12,10 @@ export default function HomePage() {
     const history = useHistory()
     const data = useContext(PokeContext)
     data.pokeList.sort(function(a,b){return a.id - b.id})
+
+    useEffect(() => {
+        data.setDisplayBattle(false)
+    }, [])
 
     const closePopUp = () => {
         const toggle = !data.popUp
@@ -44,8 +48,8 @@ export default function HomePage() {
 
     return (
         <div>
-            {data.popUp? <PopUp message={`Pokemon adicionado à pokedex!`} onClickBtn={closePopUp}/> : null}
-            <Header pageName="Lista de Pokemons"/>
+            {data.popUp? <PopUp message={`Pokemon added to pokedex!`} onClickBtn={closePopUp}/> : null}
+            <Header pageName="Pokemon List"/>
             <CardsContainer>
                 {data.pokeList[0] ? renderPokeList : <Loading/>}
             </CardsContainer>

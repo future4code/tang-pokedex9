@@ -6,7 +6,7 @@ import { LoadingContainer } from './styles';
 export default function Loading() {
     return (
         <LoadingContainer>
-            <img src={loading} alt="Carregando..." />
+            <img src={loading} alt="Loading..." />
         </LoadingContainer>
     )
 }

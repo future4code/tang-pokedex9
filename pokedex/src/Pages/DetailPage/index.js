@@ -15,7 +15,7 @@ export default function DetailsPage() {
             setPokemon(res.data)
             console.log(res.data)
         }).catch((error) => {
-            alert(`${error}: Tente novamente`)
+            alert(`${error}: Try again`)
         })
     }, [])
 
@@ -30,7 +30,7 @@ export default function DetailsPage() {
                         <img src={pokemon.sprites.back_default} alt={`${pokemon.name} back`} />
                     </InfoContainer>
                     <InfoContainer>
-                        <h3>Atributos</h3>
+                        <h3>Stats</h3>
                         {pokemon.stats.map((item) => {
                             return(
                                 <p>{item.stat.name} : {item.base_stat}</p>
@@ -38,7 +38,7 @@ export default function DetailsPage() {
                         })}
                     </InfoContainer>
                     <InfoContainer>
-                        <h3>Tipo</h3>
+                        <h3>Type</h3>
                         <TypeContainer>
                             {pokemon.types.map((item) => {
                                 return(
@@ -46,7 +46,7 @@ export default function DetailsPage() {
                                 )
                             })}
                         </TypeContainer>
-                        <h3>Principais Ataques</h3>
+                        <h3>Main Moves</h3>
                         {pokemon.moves.slice(0,5).map((item) => {
                             return(
                                 <p>{item.move.name}</p>
